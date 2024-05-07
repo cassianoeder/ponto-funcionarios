@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel - Admin </title>
+    <link rel="stylesheet" href="/static/css/dash-admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-C/KVz+RMbsN1z+3R5shV44e/SSXQBlaVYSQqsgJrvU06X+u1gHQoCOz4+6DnriC2Jv1+Dc42v3i7luCquBTp1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<style>
+    /* Adicione seu CSS aqui */
+   
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    .form-container {
+        display: none;
+        padding: 20px;
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+    }
+
+    .form-container.show {
+        display: block;
+    }
+
+    .form-container input[type="text"],
+    .form-container input[type="password"],
+    .form-container select {
+        width: calc(100% - 22px);
+        margin-bottom: 10px;
+        padding: 8px;
+    }
+
+    .form-container button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .form-container button:hover {
+        background-color: #45a049;
+    }
+</style>
+
+<body>
+    <div class='dashboard'>
+        <div class="dashboard-nav">
+            <header>
+                <a href="#!" class="brand-logo"><i class="fas fa-anchor"></i> <span>PONTO CERTO</span></a>
+                <a href="#!" class="menu-toggle"><i class="fas fa-bars"></i></a>
+            </header>
+            <nav class="dashboard-nav-list"><a href="/dashboard" class="dashboard-nav-item"><i class="fas fa-home"></i>
+                Home </a>
+                <a href="/usuarios" class="dashboard-nav-item"><i class="fas fa-file-upload"></i>Usuarios</a>
+                
+            
+              <div class="nav-item-divider"></div>
+              <form action="/logout" method="GET">
+                <button class="dashboard-nav-item" type="submit">Sair</button>
+            </form>
+            </nav>
+        </div>
+        <div class='dashboard-app'>
+            <header class='dashboard-toolbar'>
+                <a href="#!" class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></a>
+            </header>
+            <div class='dashboard-content'>
+                <div class='container'>
+                    
+                        <h1>Usuários</h1>
+                        
+                        <!-- Botão para adicionar novo usuário -->
+                        <button id="btnAdicionarUsuario">Adicionar Usuário</button>
+                        
+                        <!-- Formulário para adicionar/editar usuário -->
+                        <div class="form-container" id="formAdicionarUsuario">
+                            <h2>Adicionar/Editar Usuário</h2>
+                            <form action="/adicionar_usuario" method="POST">
+                                <!-- Campos do formulário -->
+                                <label for="usuario">Usuário:</label>
+                                <input type="text" id="usuario" name="usuario" required><br>
+                    
+                                <label for="senha">Senha:</label>
+                                <input type="password" id="senha" name="senha" required><br>
+                    
+                                <label for="nome">Nome:</label>
+                                <input type="text" id="nome" name="nome" required><br>
+                    
+                                <label for="role">Função:</label>
+                                <select id="role" name="role" required>
+                                    <option value="funcionario">Funcionário</option>
+                                    <option value="admin">Administrador</option>
+                                </select><br>
+                    
+                                <button type="submit">Salvar</button>
+                            </form>
+                        </div>
+                        
+                        <!-- Tabela para exibir os usuários -->
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Usuário</th>
+                                    <th>Nome</th>
+                                    <th>Função</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for usuario in usuarios %}
+                                <tr>
+                                    <td>{{ usuario.usuario }}</td>
+                                    <td>{{ usuario.nome }}</td>
+                                    <td>{{ usuario.role }}</td>
+                                    <td>
+                                        <button class="btnEditarUsuario" data-usuario="{{ usuario.usuario }}">Editar</button>
+                                        <button class="btnSalvarUsuario" data-usuario="{{ usuario.usuario }}" style="display: none;">Salvar</button>
+                                        <button class="btnCancelarEdicao" data-usuario="{{ usuario.usuario }}" style="display: none;">Cancelar</button>
+                                        <form action="/excluir_usuario/{{ usuario.usuario }}" method="post" style="display:inline;">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit">Excluir</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    
+                        <!-- Script para mostrar/esconder formulário de adicionar/editar usuário -->
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                // Botão para mostrar o formulário de adicionar usuário
+                                document.getElementById('btnAdicionarUsuario').addEventListener('click', function() {
+                                    document.getElementById('formAdicionarUsuario').classList.toggle('show');
+                                    document.getElementById('usuario').value = '';
+                                    document.getElementById('senha').value = '';
+                                    document.getElementById('nome').value = '';
+                                    document.getElementById('role').value = 'funcionario';
+                                });
+                        
+                                // Botões para editar usuário
+                                var btnEditarUsuario = document.querySelectorAll('.btnEditarUsuario');
+                                btnEditarUsuario.forEach(function(btn) {
+                                    btn.addEventListener('click', function() {
+                                        var usuario = btn.getAttribute('data-usuario');
+                                        var nome = btn.parentElement.parentElement.querySelector('td:nth-child(2)').textContent;
+                                        var role = btn.parentElement.parentElement.querySelector('td:nth-child(3)').textContent;
+                                        
+                                        document.getElementById('usuario').value = usuario;
+                                        document.getElementById('senha').value = '';
+                                        document.getElementById('nome').value = nome;
+                                        document.getElementById('role').value = role;
+                                        document.getElementById('formAdicionarUsuario').classList.add('show');
+                                    });
+                                });
+                            });
+                        </script>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function toggleMenu() {
+            document.querySelector('.dashboard-nav').classList.toggle('mobile-show');
+        }
+    </script>
+  <script src="/static/js/dash-admin.js"></script>
+</body>
+</html>

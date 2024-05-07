@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel - Admin </title>
+    <link rel="stylesheet" href="/static/css/dash-admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-C/KVz+RMbsN1z+3R5shV44e/SSXQBlaVYSQqsgJrvU06X+u1gHQoCOz4+6DnriC2Jv1+Dc42v3i7luCquBTp1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class='dashboard'>
+        <div class="dashboard-nav">
+        
+                <a href="#!" class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></a>
+
+            <nav class="dashboard-nav-list">
+                
+                <img src="/static/img/logo.png" alt="logo" class="dashboard-nav-item logo">
+                <a href="/dashboard" class="dashboard-nav-item"><i class="fas fa-home"></i> Home </a>
+                <a href="/usuarios" class="dashboard-nav-item"><i class="fas fa-file-upload"></i>Usuarios</a>
+                <a href="/funcionarios" class="dashboard-nav-item"><i class="fas fa-file-upload"></i>Extrair Horas</a>
+            
+                <form action="/logout" method="GET">
+                    <button class="dashboard-nav-item btn-sair" type="submit">Sair</button>
+                </form>
+
+            </nav>
+        </div>
+        <div class='dashboard-app'>
+            <header class='dashboard-toolbar'>
+                <a href="#!" class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></a>
+            </header>
+            <div class='dashboard-content'>
+                <div class='container'>
+                    <div class='card'>
+                        <div class='card-header'>
+                            <h1>Bem-vindo, {{ nome_funcionario }}!</h1>
+                        </div>
+                        <div class='card-body'>
+                            <p>Você está acessando sua conta em modo: {{ role }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="container_admin_info">
+                    <div class="info1">
+                        <h1>Gráfico de Horas de Trabalho dos Funcionários</h1>
+                        <img src="/static/img/grafico-consolidado.png" alt="Gráfico de Horas de Trabalho">
+                    </div>
+                    <div class="info2">
+                        <div class="alert alert-warning" role="alert"></div>
+                            {% if funcionarios_sem_registro %}
+                            
+                            <h1 class="aviso">Atenção!</h1>
+                            <h3>Os seguintes funcionários não registraram nenhuma hora hoje:</h3>
+                            {% for funcionario in funcionarios_sem_registro %}
+                            <p class="funcionario_aviso"> -{{ funcionario|capitalize }}</p>
+                            {% endfor %}
+            
+                            <p class="mb-0 aviso">Por favor, lembre-se de avisa-los para registrar as horas trabalhadas.</p>
+                            {% endif %}
+                    </div>
+                </div>
+                
+            </div>
+
+
+                
+            </div>
+        </div>
+    </div>
+    <script>
+        function toggleMenu() {
+            document.querySelector('.dashboard-nav').classList.toggle('mobile-show');
+        }
+    </script>
+  <script src="/static/js/dash-admin.js"></script>
+</body>
+</html>

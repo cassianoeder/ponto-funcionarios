@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel - Funcionario </title>
+    <link rel="stylesheet" href="/static/css/dash-funcionario.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-C/KVz+RMbsN1z+3R5shV44e/SSXQBlaVYSQqsgJrvU06X+u1gHQoCOz4+6DnriC2Jv1+Dc42v3i7luCquBTp1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class='dashboard'>
+        <div class="dashboard-nav">
+        
+            <a href="#!" class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></a>
+
+        <nav class="dashboard-nav-list">
+            
+            <img src="/static/img/logo.png" alt="logo" class="dashboard-nav-item logo">
+            <a href="/dashboard" class="dashboard-nav-item"><i class="fas fa-home"></i> Home </a>
+        
+            <form action="/logout" method="GET">
+                <button class="dashboard-nav-item btn-sair" type="submit">Sair</button>
+            </form>
+
+        </nav>
+    </div>
+        <div class='dashboard-app'>
+            <header class='dashboard-toolbar'>
+                <a href="#!" class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></a>
+            </header>
+            <div class='dashboard-content'>
+                <div class='container'>
+                    <div class='card'>
+                        <div class='card-header'>
+                            <h1>Bem-vindo, {{ nome_funcionario }}!</h1>
+                        </div>
+                       
+                    </div>
+                    <div class="container_formulario">
+                        <h2 class="titulo">Registro de Horário</h2>
+                        <p class="aviso">Note que se algum campo já estiver preenchido com horário, significa que voce já submeteu esse campo! Caso tenha preenchido erroneamente poderá alterá-lo! Você só consegue alterar horários no dia corente!</p>
+                       
+                        <form action="/dashboard" method="POST" class="horario-form">
+                            <label for="hora_inicio">Hora de Início:</label>
+                            <input type="time" id="hora_inicio" name="hora_inicio" value="{{ horas_prenchidas['hora_inicio'] }}" required><br><br>
+                            
+                            <label for="hora_pausa">Hora de Pausa:</label>
+                            <input type="time" id="hora_pausa" name="hora_pausa" value="{{ horas_prenchidas['hora_pausa'] }}"><br><br>
+                            
+                            <label for="hora_recomeco">Hora de Recomeço:</label>
+                            <input type="time" id="hora_recomeco" name="hora_recomeco" value="{{ horas_prenchidas['hora_recomeco'] }}"><br><br>
+                            
+                            <label for="hora_fim">Hora de Fim:</label>
+                            <input type="time" id="hora_fim" name="hora_fim" value="{{ horas_prenchidas['hora_fim'] }}"><br><br>
+                            
+                            <label for="folga">Folga:</label>
+                            <input type="checkbox" id="folga" name="folga"><br><br>
+                            
+                            <label for="placa_veiculo">Placa do Veículo:</label>
+                            <input type="text" id="placa_veiculo" name="placa_veiculo"><br><br>
+
+                            {% if sucesso %}
+                            <div class="alert alert-success">{{ sucesso }}</div>
+                                {% elif erro %}
+                            <div class="alert alert-danger">{{ erro }}</div>
+                                {% endif %}
+                            
+                            <input type="submit" value="Enviar" class="submit-btn">
+                        </form>
+                    </div>
+                    
+
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+    <script>
+        function toggleMenu() {
+            document.querySelector('.dashboard-nav').classList.toggle('mobile-show');
+        }
+    </script>
+  <script src="/static/js/dash-funcionarios.js"></script>
+</body>
+</html>
+
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard do Funcionário</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Dashboard do Funcionário</h2>
+        <p>Bem-vindo, [Nome do Funcionário]!</p>
+        <p>Aqui você pode visualizar suas informações e realizar suas tarefas.</p>
+        <ul>
+            <li><a href="#">Visualizar Horas</a></li>
+            <li><a href="#">Registrar Horas</a></li>
+        </ul>
+        <form action="/logout" method="GET">
+            <button type="submit">Sair</button>
+        </form>
+    </div>
+</body>
+</html>
+
+-->

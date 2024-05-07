@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel - Admin </title>
+    <link rel="stylesheet" href="/static/css/dash-admin.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-C/KVz+RMbsN1z+3R5shV44e/SSXQBlaVYSQqsgJrvU06X+u1gHQoCOz4+6DnriC2Jv1+Dc42v3i7luCquBTp1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+
+    <div class="dashboard-nav">
+        
+        <a href="#!" class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></a>
+
+    <nav class="dashboard-nav-list">
+        
+        <img src="/static/img/logo.png" alt="logo" class="dashboard-nav-item logo">
+        <a href="/dashboard" class="dashboard-nav-item"><i class="fas fa-home"></i> Home </a>
+        <a href="/usuarios" class="dashboard-nav-item"><i class="fas fa-file-upload"></i>Usuarios</a>
+        <a href="/funcionarios" class="dashboard-nav-item"><i class="fas fa-file-upload"></i>Extrair Horas</a>
+    
+        <form action="/logout" method="GET">
+            <button class="dashboard-nav-item btn-sair" type="submit">Sair</button>
+        </form>
+
+    </nav>
+</div>
+<div class='dashboard-app'>
+    <header class='dashboard-toolbar'>
+        <a href="#!" class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></a>
+    </header>
+    <div class='dashboard-content'>
+   
+
+    <div class="container mt-5">
+           <div class="row">
+               <div class="col-md-6">
+                   <h1>Exportar horas dos Funcionários</h1>
+                   <p>Defina as datas a serem exportadas, ao clicar em exportar ira realizar o Download de um arquivo Zip com os funcionários e as horas!</p>
+                   <form action="" method="POST" class="mb-3">
+                       <div class="form-group">
+                           <label for="data_inicio">Data de Início:</label>
+                           <input type="date" class="form-control" id="data_inicio" name="data_inicio" required>
+                       </div>
+                       <div class="form-group">
+                           <label for="data_fim">Data de Fim:</label>
+                           <input type="date" class="form-control" id="data_fim" name="data_fim" required>
+                       </div>
+                       <button type="submit" class="btn btn-primary">Exportar</button>
+                   </form>
+               </div>
+           </div>
+        
+           <!-- Adicione aqui o código para exibir a mensagem de erro -->
+           {% if arquivo_zip is none %}
+           <div class="row mt-3">
+               <div class="col-md-6">
+                   <div class="alert alert-danger" role="alert">
+                       Erro: Não há dados disponíveis para nenhum funcionário
+                   </div>
+               </div>
+           </div>
+           {% endif %}
+       </div>
+   
+       <!-- Adicionando o Bootstrap JavaScript -->
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+   
+    </div>
+</div>
+
+  <script src="/static/js/dash-admin.js"></script>
+</body>
+</html>
